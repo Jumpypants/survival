@@ -1,13 +1,21 @@
-<canvas id="gc" height="600" width="600" />
+<textarea id="code" rows="5" cols="50">
+  return {
+    move: "up"
+  }
+</textarea>
+<canvas id="gc" height="0" width="0" />
 <script src="constants.js" type="text/javascript"></script>
+<script src="game.js" type="text/javascript"></script>
+<script src="draw.js" type="text/javascript"></script>
+<script src="functions.js" type="text/javascript"></script>
 <script src="loop.js" type="text/javascript"></script>
 
 <script>
-  window.onload = function() {
-    canv = document.getElementById("gc");
-    ctx = canv.getContext("2d");
+  canv = document.getElementById("gc");
+  ctx = canv.getContext("2d");
 
-    setInterval(loop, 1000  / constants.fps);
-  }
+  canv.width = display.cw;
+  canv.height = display.ch;
 
+  setInterval(loop, 1000  / constants.fps);
 </script>
