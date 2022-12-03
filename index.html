@@ -1,6 +1,12 @@
 <textarea id="code" rows="5" cols="50">
-  return {
-    move: "up"
+  if(state.trees.length > 0 && state.trees[0].y == 0){
+    return {
+      move: "right"
+    }
+  } else {
+    return {
+      move: "up"
+    }
   }
 </textarea>
 <canvas id="gc" height="0" width="0" />

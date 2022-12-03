@@ -1,6 +1,13 @@
 var player = {
-  in: {
-    x: 100,
-    y: 100
-  }
+  state: {
+    trees: []
+  },
+  vision: 4
 }
+
+var trees = [{
+  x: 4,
+  y: -2
+}];
+
+var objects = [];

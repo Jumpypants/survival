@@ -1,4 +1,9 @@
 function loop(){
+  updatePlayer();
   runCode();
-  drawbg();
+  updateObjects();
+  drawBg();
+  drawGrid();
+  drawTrees();
+  drawPlayer();
 }
