@@ -40,7 +40,7 @@ function genObjects(){
   trees = [];
   for(var i = -renderDistance; i <= renderDistance; i++){
     for(var j = -renderDistance; j <= renderDistance; j++){
-      if(whichObject(player.x + i, player.y + j) == "tree"){
+      if(whichObject(player.state.x + i, player.state.y + j) == "tree"){
         trees.push({x: i,y: j});
       }
     }

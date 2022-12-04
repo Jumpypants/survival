@@ -1,16 +1,16 @@
 function moveAction(action){
   switch(action){
     case "up":
-      player.y--;
+      player.state.y--;
       break;
     case "down":
-      player.y++;
+      player.state.y++;
       break;
     case "left":
-      player.x--;
+      player.state.x--;
       break;
     case "right":
-      player.x++;
+      player.state.x++;
       break;
   }
 }
