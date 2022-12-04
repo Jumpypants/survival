@@ -17,3 +17,6 @@ var display = {
   treeCol: "brown",
   playerCol: "blue"
 };
+
+var seed = 234764646379;
+var renderDistance = 5;

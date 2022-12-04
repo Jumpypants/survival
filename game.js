@@ -1,13 +1,11 @@
 var player = {
   state: {
-    trees: []
+    trees: [],
+    memory: {}
   },
-  vision: 4
+  vision: 4,
+  x: 0,
+  y: 0
 }
 
-var trees = [{
-  x: 4,
-  y: -2
-}];
-
-var objects = [];
+var trees = [];

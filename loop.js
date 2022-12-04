@@ -1,7 +1,7 @@
 function loop(){
+  genObjects();
   updatePlayer();
   runCode();
-  updateObjects();
   drawBg();
   drawGrid();
   drawTrees();

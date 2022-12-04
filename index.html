@@ -1,18 +1,46 @@
 <textarea id="code" rows="5" cols="50">
-  if(state.trees.length > 0 && state.trees[0].y == 0){
+var memory = state.memory;
+console.log(memory);
+if(memory.dir == null){
+  memory.dir = 0;
+}
+if(memory.move == 0 || memory.move == null){
+  memory.dir = Math.floor(Math.random() * 4);
+  memory.move = Math.floor(Math.random() * 10) + 1;
+}
+switch(memory.dir){
+  case 0:
+    memory.move--;
     return {
-      move: "right"
+      action: "left",
+      memory: state.memory
     }
-  } else {
+  case 1:
+    memory.move--;
     return {
-      move: "up"
+      action: "right",
+      memory: state.memory
     }
-  }
+  case 2:
+    memory.move--;
+    return {
+      action: "up",
+      memory: state.memory
+    }
+  case 3:
+    memory.move--;
+    return {
+      action: "down",
+      memory: memory
+    }
+}
+
 </textarea>
 <canvas id="gc" height="0" width="0" />
 <script src="constants.js" type="text/javascript"></script>
 <script src="game.js" type="text/javascript"></script>
 <script src="draw.js" type="text/javascript"></script>
+<script src="actions.js" type="text/javascript"></script>
 <script src="functions.js" type="text/javascript"></script>
 <script src="loop.js" type="text/javascript"></script>
 
