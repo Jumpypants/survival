@@ -45,8 +45,11 @@ function drawPlayer(){
 function drawTrees(){
   for(var i = 0; i < trees.length; i++){
     ctx.fillStyle = display.treeCol;
-    ctx.fillRect(display.cw / 2 - display.gridW / 2 + trees[i].x * display.gridW,
-    display.ch / 2 - display.gridH / 2 + trees[i].y * display.gridH,
-    display.gridW, display.gridH);
+    var x = trees[i].x - player.state.x;
+    var y = trees[i].y - player.state.y;
+    ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
+                 display.ch / 2 + (y - 0.5) * display.gridH,
+                 display.gridW,
+                 display.gridH);
   }
 }

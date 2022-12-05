@@ -1,16 +1,50 @@
 function moveAction(action){
+  var newX = player.state.x;
+  var newY = player.state.y;
   switch(action){
     case "up":
-      player.state.y--;
+      newY--;
       break;
     case "down":
-      player.state.y++;
+      newY++;
       break;
     case "left":
-      player.state.x--;
+      newX--;
       break;
     case "right":
-      player.state.x++;
+      newX++;
       break;
+  }
+  if(!isSolid(whichObject(newX, newY))){
+    player.state.x = newX;
+    player.state.y = newY;
+  }
+}
+
+function breakAction(action){
+  var obX = player.state.x;
+  var obY = player.state.y;
+  switch(action){
+    case "break_up":
+      obY--;
+      break;
+    case "break_down":
+      obY++;
+      break;
+    case "break_left":
+      obX--;
+      break;
+    case "break_right":
+      obX++;
+      break;
+  }
+  obj = whichObject(obX, obY);
+  if(isBreakable(obj)){
+    var newObj = { ...obj };
+    newObj.health -= player.breakPower;
+    if (newObj.health <= 0) {
+      newObj = defaultAir;
+    }
+    objectMap.set(coordinateKey(obX, obY), newObj);
   }
 }

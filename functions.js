@@ -1,12 +1,22 @@
 function runCode(){
   var out = code({...player.state});
   console.log(out);
-  //move
-  if(out.action == "up"
-  || out.action == "down"
-  || out.action == "left"
-  || out.action == "right"){
-    moveAction(out.action);
+  //action
+  switch (out.action) {
+    case "up":
+    case "down":
+    case "left":
+    case "right":
+      moveAction(out.action);
+      break;
+    case "break_up":
+    case "break_down":
+    case "break_left":
+    case "break_right":
+      breakAction(out.action);
+      break;
+    default:
+      break;
   }
 
   //memory
@@ -23,7 +33,11 @@ function hash(obj, seed) {
     return hval >>> 0;
 }
 
-function whichObject(x, y) {
+function coordinateKey(x, y) {
+  return x + "," + y;
+}
+
+function whichObjectType(x, y) {
   var hashCode = hash({x: x, y: y}, seed);
   var category = hashCode % 15;
 
@@ -35,13 +49,54 @@ function whichObject(x, y) {
   }
 }
 
+const defaultTree = { type: "tree", health: constants.treeStartHealth };
+const defaultAir = { type: "air" };
+
+function defaultObject(type) {
+  switch(type) {
+    case "tree": return defaultTree;
+    case "air": return defaultAir;
+  }
+}
+
+var objectMap = new Map();
+
+function whichObject(x, y) {
+  var fromMap = objectMap.get(coordinateKey(x, y));
+  if (fromMap !== undefined) {
+    return fromMap;
+  }
+  return defaultObject(whichObjectType(x, y));
+}
+
+function isSolid(ob){
+  switch (ob.type) {
+    case "tree":
+      return true;
+      break;
+    default:
+      return false;
+  }
+}
+
+function isBreakable(ob){
+  switch (ob.type) {
+    case "tree":
+      return true;
+      break;
+    default:
+      return false;
+  }
+}
+
 function genObjects(){
   //trees
   trees = [];
-  for(var i = -renderDistance; i <= renderDistance; i++){
-    for(var j = -renderDistance; j <= renderDistance; j++){
-      if(whichObject(player.state.x + i, player.state.y + j) == "tree"){
-        trees.push({x: i,y: j});
+  for(var x = player.state.x - renderDistance; x <= player.state.x + renderDistance; x++){
+    for(var y = player.state.y - renderDistance; y <= player.state.y + renderDistance; y++){
+      var obj = whichObject(x, y);
+      if(obj.type == "tree"){
+        trees.push({x: x,y: y, obj: obj});
       }
     }
   }

@@ -1,7 +1,8 @@
 var code = new Function("state",document.getElementById("code").value);
 
 var constants = {
-  fps: 1
+  fps: 1,
+  treeStartHealth: 1
 };
 
 var display = {
