@@ -10,4 +10,5 @@ function loop(){
   drawTrees();
   drawPlayer();
   player.drawFunction(player.state);
+  console.log(player.state);
 }

@@ -7,25 +7,26 @@ function code(state){
     m.frame++;
   }
 
-  if(state.trees.length > 0){
+  if(state.objects.trees.length > 0){
     var c = 0;
-    for(var i = 0; i < state.trees.length; i++){
-      var x = state.trees[i].x - state.x;
-      var y = state.trees[i].y - state.y;
-      var cx = state.trees[c].x - state.x;
-      var cy = state.trees[c].y - state.y;
+    for(var i = 0; i < state.objects.trees.length; i++){
+      var x = state.objects.trees[i].x - state.x;
+      var y = state.objects.trees[i].y - state.y;
+      var cx = state.objects.trees[c].x - state.x;
+      var cy = state.objects.trees[c].y - state.y;
       if(Math.abs(x) + Math.abs(y) <
       Math.abs(cx) + Math.abs(cy)){
         c = i;
       }
     }
-    var tx = state.trees[c].x;
-    var ty = state.trees[c].y;
+
+    var tx = state.objects.trees[c].x;
+    var ty = state.objects.trees[c].y;
 
     function draw(state){
-      for(var i = 0; i < state.trees.length; i++){
-        var x = state.trees[i].x - state.x;
-        var y = state.trees[i].y - state.y;
+      for(var i = 0; i < state.objects.trees.length; i++){
+        var x = state.objects.trees[i].x - state.x;
+        var y = state.objects.trees[i].y - state.y;
         if(x == tx - state.x && y == ty - state.y){
           ctx.fillStyle = "purple";
           ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
@@ -35,9 +36,7 @@ function code(state){
         }
       }
       ctx.strokeStyle = "purple";
-      ctx.beginPath();
-      ctx.rect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
-      ctx.stroke();
+      ctx.strokeRect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
     }
 
     if(state.y == ty && state.x == tx + 1){
@@ -96,19 +95,21 @@ function code(state){
     memory: m,
     draw: function(state){
       ctx.strokeStyle = "purple";
-      ctx.beginPath();
-      ctx.rect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
-      ctx.stroke();
+      ctx.strokeRect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
     }
   }
 }
 
-var constants = {
-  fps: 10,
-  treeStartHealth: 1
+const constants = {
+  fps: 1,
+
+  trees: {
+    startHealth: 1,
+    breakFunct: function(){player.state.resources.wood += 1}
+  }
 };
 
-var display = {
+const display = {
   cw: 900,
   ch: 600,
 
@@ -123,5 +124,5 @@ var display = {
   playerCol: "blue"
 };
 
-var seed = 237646379;
-var renderDistance = 10;
+const seed = 237646379;
+const renderDistance = 10;

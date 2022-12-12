@@ -1,16 +1,16 @@
 var player = {
   state: {
-    trees: [],
+    objects: {trees: []},
     memory: {},
     x: 0,
     y: 0,
-    t: [0,0,0,0],
     vision: 4,
-    breakPower: 1
+    breakPower: 1,
+    resources: {wood: 0}
   },
   drawFunction: function(){}
 };
 
-var trees = [];
+var objects = {trees: []};
 
 var objectMemory = [];

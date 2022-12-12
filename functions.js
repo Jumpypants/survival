@@ -1,6 +1,5 @@
 function runCode(){
   var out = code({...player.state});
-  player.state.t = out.t;
   console.log(out);
   player.drawFunction = out.draw;
   //action
@@ -51,7 +50,7 @@ function whichObjectType(x, y) {
   }
 }
 
-const defaultTree = { type: "tree", health: constants.treeStartHealth };
+const defaultTree = { type: "tree", health: constants.trees.startHealth };
 const defaultAir = { type: "air" };
 
 function defaultObject(type) {
@@ -71,8 +70,8 @@ function whichObject(x, y) {
   return defaultObject(whichObjectType(x, y));
 }
 
-function isSolid(ob){
-  switch (ob.type) {
+function isSolid(obj){
+  switch (obj.type) {
     case "tree":
       return true;
       break;
@@ -81,8 +80,8 @@ function isSolid(ob){
   }
 }
 
-function isBreakable(ob){
-  switch (ob.type) {
+function isBreakable(obj){
+  switch (obj.type) {
     case "tree":
       return true;
       break;
@@ -93,12 +92,12 @@ function isBreakable(ob){
 
 function updateObjects(){
   //trees
-  trees = [];
+  objects.trees = [];
   for(var x = player.state.x - renderDistance; x <= player.state.x + renderDistance; x++){
     for(var y = player.state.y - renderDistance; y <= player.state.y + renderDistance; y++){
       var obj = whichObject(x, y);
       if(obj.type == "tree"){
-        trees.push({x: x,y: y, obj: obj});
+        objects.trees.push({x: x, y: y, obj: obj});
       }
     }
   }
@@ -106,15 +105,15 @@ function updateObjects(){
 
 function updatePlayer(){
   //trees
-  player.state.trees = [];
-  for(var i = 0; i < trees.length; i++){
-    var x = trees[i].x - player.state.x;
-    var y = trees[i].y - player.state.y;
+  player.state.objects.trees = [];
+  for(var i = 0; i < objects.trees.length; i++){
+    var x = objects.trees[i].x - player.state.x;
+    var y = objects.trees[i].y - player.state.y;
     if(x <= player.state.vision
     && x >= -player.state.vision
     && y <= player.state.vision
     && y >= -player.state.vision){
-      player.state.trees.push(trees[i]);
+      player.state.objects.trees.push(objects.trees[i]);
     }
   }
 }

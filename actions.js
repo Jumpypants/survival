@@ -22,29 +22,36 @@ function moveAction(action){
 }
 
 function breakAction(action){
-  var obX = player.state.x;
-  var obY = player.state.y;
+  var objX = player.state.x;
+  var objY = player.state.y;
   switch(action){
     case "break_up":
-      obY--;
+      objY--;
       break;
     case "break_down":
-      obY++;
+      objY++;
       break;
     case "break_left":
-      obX--;
+      objX--;
       break;
     case "break_right":
-      obX++;
+      objX++;
       break;
   }
-  obj = whichObject(obX, obY);
+  obj = whichObject(objX, objY);
   if(isBreakable(obj)){
     var newObj = { ...obj };
     newObj.health -= player.state.breakPower;
-    if (newObj.health <= 0) {
+    if(newObj.health <= 0){
       newObj = defaultAir;
+      switch(obj.type){
+        case "tree":
+          constants.trees.breakFunct();
+          break;
+        default:
+          break;
+      }
     }
-    objectMap.set(coordinateKey(obX, obY), newObj);
+    objectMap.set(coordinateKey(objX, objY), newObj);
   }
 }
