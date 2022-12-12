@@ -41,7 +41,7 @@ function breakAction(action){
   obj = whichObject(obX, obY);
   if(isBreakable(obj)){
     var newObj = { ...obj };
-    newObj.health -= player.breakPower;
+    newObj.health -= player.state.breakPower;
     if (newObj.health <= 0) {
       newObj = defaultAir;
     }

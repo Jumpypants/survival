@@ -5,8 +5,11 @@ function drawBg(){
 
 function drawGrid(){
   var gw = display.gridW;
+  var gh = display.gridH;
+  ctx.strokeStyle = display.gridCol;
+  ctx.lineWidth = display.gridLineW;
+
   for(var i = 0; i < display.cw / gw / 2; i++){
-    ctx.strokeStyle = display.gridCol;
     //vertical right side
     ctx.beginPath();
     ctx.moveTo(gw * i + gw / 2 + display.cw / 2, 0);
@@ -18,9 +21,7 @@ function drawGrid(){
     ctx.lineTo(gw * -i - gw / 2 + display.cw / 2, display.ch);
     ctx.stroke();
   }
-  var gh = display.gridH;
   for(var i = 0; i < display.ch / gh / 2; i++){
-    ctx.strokeStyle = display.gridCol;
     //horizantal top
     ctx.beginPath();
     ctx.moveTo(0, gh * i + gh / 2 + display.ch / 2);

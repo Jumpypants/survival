@@ -1,6 +1,8 @@
 function runCode(){
   var out = code({...player.state});
+  player.state.t = out.t;
   console.log(out);
+  player.drawFunction = out.draw;
   //action
   switch (out.action) {
     case "up":
@@ -89,7 +91,7 @@ function isBreakable(ob){
   }
 }
 
-function genObjects(){
+function updateObjects(){
   //trees
   trees = [];
   for(var x = player.state.x - renderDistance; x <= player.state.x + renderDistance; x++){
@@ -103,12 +105,15 @@ function genObjects(){
 }
 
 function updatePlayer(){
+  //trees
   player.state.trees = [];
   for(var i = 0; i < trees.length; i++){
-    if(trees[i].x <= player.vision
-    && trees[i].x >= -player.vision
-    && trees[i].y <= player.vision
-    && trees[i].y >= -player.vision){
+    var x = trees[i].x - player.state.x;
+    var y = trees[i].y - player.state.y;
+    if(x <= player.state.vision
+    && x >= -player.state.vision
+    && y <= player.state.vision
+    && y >= -player.state.vision){
       player.state.trees.push(trees[i]);
     }
   }

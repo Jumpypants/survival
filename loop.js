@@ -1,12 +1,13 @@
 function loop(){
-  //console.log(player.state);
-  console.log(objectMap);
-  console.log(objectMap.get({x:1, y:-1}))
-  genObjects();
+  updateObjects();
   updatePlayer();
   runCode();
+  updateObjects();
+  updatePlayer();
+  //draw
   drawBg();
   drawGrid();
   drawTrees();
   drawPlayer();
+  player.drawFunction(player.state);
 }

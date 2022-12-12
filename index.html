@@ -1,29 +1,4 @@
 <textarea id="code" rows="5" cols="50">
-var m = state.memory;
-
-if(m.frame === undefined){
-  m.frame = 0;
-} else {
-  m.frame++;
-}
-
-if(m.frame == 0){
-  return {
-    action: "up",
-    memory: m
-  }
-} else if(m.frame == 1){
-  return {
-    action: "break_right",
-    memory: m
-  }
-}
-
-return {
-  action: "no",
-  memory: m
-}
-
 </textarea>
 <canvas id="gc" height="0" width="0" />
 <script src="constants.js" type="text/javascript"></script>
