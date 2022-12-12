@@ -43,11 +43,22 @@ function drawPlayer(){
   display.gridH);
 }
 
-function drawTrees(){
+function drawObjects(){
+  //trees
   for(var i = 0; i < objects.trees.length; i++){
     ctx.fillStyle = display.treeCol;
     var x = objects.trees[i].x - player.state.x;
     var y = objects.trees[i].y - player.state.y;
+    ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
+      display.ch / 2 + (y - 0.5) * display.gridH,
+      display.gridW,
+      display.gridH);
+  }
+  //rocks
+  for(var i = 0; i < objects.rocks.length; i++){
+    ctx.fillStyle = display.rockCol;
+    var x = objects.rocks[i].x - player.state.x;
+    var y = objects.rocks[i].y - player.state.y;
     ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
       display.ch / 2 + (y - 0.5) * display.gridH,
       display.gridW,

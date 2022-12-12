@@ -7,7 +7,7 @@ function loop(){
   //draw
   drawBg();
   drawGrid();
-  drawTrees();
+  drawObjects();
   drawPlayer();
   player.drawFunction(player.state);
   console.log(player.state);

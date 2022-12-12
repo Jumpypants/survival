@@ -1,6 +1,6 @@
 var player = {
   state: {
-    objects: {trees: []},
+    objects: {trees: [], rocks: []},
     memory: {},
     x: 0,
     y: 0,
@@ -11,6 +11,6 @@ var player = {
   drawFunction: function(){}
 };
 
-var objects = {trees: []};
+var objects = {trees: [], rocks: []};
 
 var objectMemory = [];

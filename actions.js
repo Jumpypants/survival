@@ -55,3 +55,10 @@ function breakAction(action){
     objectMap.set(coordinateKey(objX, objY), newObj);
   }
 }
+
+function craftWoodenPickaxeAction(){
+  if(player.state.resources.wood >= constants.items.woodenPickaxeWoodCost){
+    player.state.resources.wood -= constants.items.woodenPickaxeWoodCost;
+    player.state.breakPower = constants.items.woodenPickaxeBreakPower;
+  }
+}

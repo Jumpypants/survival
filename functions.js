@@ -16,6 +16,9 @@ function runCode(){
     case "break_right":
       breakAction(out.action);
       break;
+    case "craft_wooden-pickaxe":
+      craftWoodenPickaxeAction();
+      break;
     default:
       break;
   }
@@ -40,23 +43,25 @@ function coordinateKey(x, y) {
 
 function whichObjectType(x, y) {
   var hashCode = hash({x: x, y: y}, seed);
-  var category = hashCode % 15;
+  var category = hashCode % 30;
 
   switch (category) {
     case 0:
-      return "tree";
-   default:
-      return "air";
+    case 1: return "tree";
+    case 2: return "rock"
+    default: return "air";
   }
 }
 
 const defaultTree = { type: "tree", health: constants.trees.startHealth };
+const defaultRock = { type: "rock", health: constants.rocks.startHealth };
 const defaultAir = { type: "air" };
 
 function defaultObject(type) {
   switch(type) {
     case "tree": return defaultTree;
     case "air": return defaultAir;
+    case "rock": return defaultRock;
   }
 }
 
@@ -72,32 +77,32 @@ function whichObject(x, y) {
 
 function isSolid(obj){
   switch (obj.type) {
-    case "tree":
-      return true;
-      break;
-    default:
-      return false;
+    case "tree": return true;
+    case "rock": return true;
+    default: return false;
   }
 }
 
 function isBreakable(obj){
   switch (obj.type) {
-    case "tree":
-      return true;
-      break;
-    default:
-      return false;
+    case "tree": return true;
+    case "rock": return true;
+    default: return false;
   }
 }
 
 function updateObjects(){
-  //trees
-  objects.trees = [];
+  objects = {trees: [], rocks: []};
   for(var x = player.state.x - renderDistance; x <= player.state.x + renderDistance; x++){
     for(var y = player.state.y - renderDistance; y <= player.state.y + renderDistance; y++){
       var obj = whichObject(x, y);
-      if(obj.type == "tree"){
-        objects.trees.push({x: x, y: y, obj: obj});
+      switch(obj.type){
+        case "tree":
+          objects.trees.push({x: x, y: y, obj: obj});
+          break;
+        case "rock":
+          objects.rocks.push({x: x, y: y, obj: obj});
+          break;
       }
     }
   }
@@ -114,6 +119,18 @@ function updatePlayer(){
     && y <= player.state.vision
     && y >= -player.state.vision){
       player.state.objects.trees.push(objects.trees[i]);
+    }
+  }
+  //rocks
+  player.state.objects.rocks = [];
+  for(var i = 0; i < objects.rocks.length; i++){
+    var x = objects.rocks[i].x - player.state.x;
+    var y = objects.rocks[i].y - player.state.y;
+    if(x <= player.state.vision
+    && x >= -player.state.vision
+    && y <= player.state.vision
+    && y >= -player.state.vision){
+      player.state.objects.rocks.push(objects.rocks[i]);
     }
   }
 }

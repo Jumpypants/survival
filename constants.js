@@ -7,6 +7,17 @@ function code(state){
     m.frame++;
   }
 
+  if(state.resources.wood == 15){
+    return {
+      action: "craft_wooden-pickaxe",
+      memory: m,
+      draw: function(state){
+        ctx.strokeStyle = "purple";
+        ctx.strokeRect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
+      }
+    }
+  }
+
   if(state.objects.trees.length > 0){
     var c = 0;
     for(var i = 0; i < state.objects.trees.length; i++){
@@ -101,11 +112,19 @@ function code(state){
 }
 
 const constants = {
-  fps: 1,
+  fps: 5,
 
   trees: {
-    startHealth: 1,
+    startHealth: 3,
     breakFunct: function(){player.state.resources.wood += 1}
+  },
+  rocks: {
+    startHealth: 100,
+    breakFunct: function(){player.state.resources.wood += 1}
+  },
+  items: {
+    woodenPickaxeWoodCost: 15,
+    woodenPickaxeBreakPower: 50
   }
 };
 
@@ -121,6 +140,7 @@ const display = {
   gridLineW: 3,
 
   treeCol: "brown",
+  rockCol: "gray",
   playerCol: "blue"
 };
 
