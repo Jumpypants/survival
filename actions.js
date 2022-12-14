@@ -18,6 +18,7 @@ function moveAction(action){
   if(!isSolid(whichObject(newX, newY))){
     player.state.x = newX;
     player.state.y = newY;
+    changePlayerStats(constants.actions.moveHungerCost, constants.actions.moveThirstCost);
   }
 }
 
@@ -53,6 +54,7 @@ function breakAction(action){
       }
     }
     objectMap.set(coordinateKey(objX, objY), newObj);
+    changePlayerStats(constants.actions.breakHungerCost, constants.actions.breakThirstCost);
   }
 }
 
@@ -60,5 +62,6 @@ function craftWoodenPickaxeAction(){
   if(player.state.resources.wood >= constants.items.woodenPickaxeWoodCost){
     player.state.resources.wood -= constants.items.woodenPickaxeWoodCost;
     player.state.breakPower = constants.items.woodenPickaxeBreakPower;
+    changePlayerStats(constants.actions.craftHungerCost, constants.actions.craftThirstCost);
   }
 }

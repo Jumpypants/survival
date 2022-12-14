@@ -91,6 +91,25 @@ function isBreakable(obj){
   }
 }
 
+function changePlayerStats(hunger, thirst){
+  player.state.hunger -= hunger;
+  if(player.state.hunger < 0){
+    player.state.health += player.state.hunger;
+    player.state.hunger = 0;
+  }
+  player.state.thirst -= thirst;
+  if(player.state.thirst < 0){
+    player.state.health += player.state.thirst;
+    player.state.thirst = 0;
+  }
+}
+
+function checkGameOver(){
+  if(player.state.health <= 0){
+    gameState = "lose";
+  }
+}
+
 function updateObjects(){
   objects = {trees: [], rocks: []};
   for(var x = player.state.x - renderDistance; x <= player.state.x + renderDistance; x++){

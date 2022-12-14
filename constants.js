@@ -34,79 +34,91 @@ function code(state){
     var tx = state.objects.trees[c].x;
     var ty = state.objects.trees[c].y;
 
-    function draw(state){
-      for(var i = 0; i < state.objects.trees.length; i++){
-        var x = state.objects.trees[i].x - state.x;
-        var y = state.objects.trees[i].y - state.y;
-        if(x == tx - state.x && y == ty - state.y){
-          ctx.fillStyle = "purple";
-          ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
-            display.ch / 2 + (y - 0.5) * display.gridH,
-            display.gridW,
-            display.gridH);
-        }
-      }
-      ctx.strokeStyle = "purple";
-      ctx.strokeRect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
-    }
+    //a* path
+    var obstacles = state.objects.rocks;
 
-    if(state.y == ty && state.x == tx + 1){
-      return {
-        action: "break_left",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.y == ty && state.x == tx - 1){
-      return {
-        action: "break_right",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.x == tx && state.y == ty + 1){
-      return {
-        action: "break_up",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.x == tx && state.y == ty - 1){
-      return {
-        action: "break_down",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.x < tx){
-      return {
-        action: "right",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.x > tx){
-      return {
-        action: "left",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.y < ty){
-      return {
-        action: "down",
-        memory: m,
-        draw: draw
-      }
-    } else if(state.y > ty){
-      return {
-        action: "up",
-        memory: m,
-        draw: draw
-      }
-    }
+    m.path = shortestPath({x: state.x, y: state.y}, {x: tx, y: ty}, obstacles, 1000);
+
+    var nx = m.path[0].x;
+    var ny = m.path[0].y;
+  } else {
+    //a* path
+    var obstacles = state.objects.rocks;
+
+    m.path = shortestPath({x: state.x, y: state.y}, {x: state.x, y: state.y - state.vision - 1}, obstacles, 1000);
+
+    var nx = m.path[0].x;
+    var ny = m.path[0].y;
   }
 
-  return {
-    action: "up",
-    memory: m,
-    draw: function(state){
-      ctx.strokeStyle = "purple";
-      ctx.strokeRect((-player.state.vision - 0.5) * display.gridW + display.cw / 2, (-player.state.vision - 0.5) * display.gridH + display.ch / 2, (player.state.vision + 0.5) * display.gridW * 2, (player.state.vision + 0.5) * display.gridH * 2);
+  function draw(state){
+    ctx.fillStyle = "white";
+    for(var i = 1; i < state.memory.path.length; i++){
+      var x = state.memory.path[i].x - state.x;
+      var y = state.memory.path[i].y - state.y;
+      ctx.fillRect(display.cw / 2 + (x - 0.25) * display.gridW,
+        display.ch / 2 + (y - 0.25) * display.gridH,
+        display.gridW / 2,
+        display.gridH / 2);
+    }
+
+    ctx.strokeStyle = "purple";
+    ctx.strokeRect((-state.vision - 0.5) * display.gridW + display.cw / 2, (-state.vision - 0.5) * display.gridH + display.ch / 2, (state.vision + 0.5) * display.gridW * 2, (state.vision + 0.5) * display.gridH * 2);
+
+    ctx.font = "" + 20 + "px " + display.font;
+    ctx.fillStyle = "black";
+    ctx.fillText("health: " + state.health, 10, 50);
+    ctx.fillText("hunger: " + state.hunger, 10, 80);
+    ctx.fillText("thirst: " + state.thirst, 10, 110);
+  }
+
+  if(state.y == ty && state.x == tx + 1){
+    return {
+      action: "break_left",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.y == ty && state.x == tx - 1){
+    return {
+      action: "break_right",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.x == tx && state.y == ty + 1){
+    return {
+      action: "break_up",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.x == tx && state.y == ty - 1){
+    return {
+      action: "break_down",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.x == nx - 1) {
+    return {
+      action: "right",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.x == nx + 1) {
+    return {
+      action: "left",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.y == ny - 1) {
+    return {
+      action: "down",
+      memory: m,
+      draw: draw
+    }
+  } else if(state.y == ny + 1) {
+    return {
+      action: "up",
+      memory: m,
+      draw: draw
     }
   }
 }
@@ -120,17 +132,27 @@ const constants = {
   },
   rocks: {
     startHealth: 100,
-    breakFunct: function(){player.state.resources.wood += 1}
+    breakFunct: function(){player.state.resources.stone += 1}
   },
   items: {
     woodenPickaxeWoodCost: 15,
     woodenPickaxeBreakPower: 50
+  },
+  actions: {
+    moveHungerCost: 2,
+    moveThirstCost: 2,
+    breakHungerCost: 5,
+    breakThirstCost: 6,
+    craftHungerCost: 7,
+    craftThirstCost: 6
   }
 };
 
 const display = {
   cw: 900,
   ch: 600,
+
+  font: "Arial",
 
   gridW: 50,
   gridH: 50,
@@ -141,7 +163,15 @@ const display = {
 
   treeCol: "brown",
   rockCol: "gray",
-  playerCol: "blue"
+  playerCol: "blue",
+
+  //game over
+  gameOverBgCol: "green",
+  gameOverFontSize: 50,
+  gameOverFontCol: "black",
+  gameOverXOffset: -230,
+  gameOverYOffset: -25,
+  gameOverText: "Game Over! Score: "
 };
 
 const seed = 237646379;

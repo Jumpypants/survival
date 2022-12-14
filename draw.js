@@ -65,3 +65,12 @@ function drawObjects(){
       display.gridH);
   }
 }
+
+function drawGameOver(){
+  ctx.fillStyle = display.gameOverBgCol;
+  ctx.fillRect(0, 0, display.cw, display.ch);
+
+  ctx.font = "" + display.gameOverFontSize + "px " + display.font;
+  ctx.fillStyle = display.gameOverFontCol;
+  ctx.fillText(display.gameOverText + score, display.cw / 2 + display.gameOverXOffset, display.ch / 2 + display.gameOverYOffset);
+}
