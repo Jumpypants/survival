@@ -49,6 +49,45 @@ function breakAction(action){
         case "tree":
           constants.trees.breakFunct();
           break;
+        case "rock":
+          constants.rocks.breakFunct();
+          break;
+        default:
+          break;
+      }
+    }
+    objectMap.set(coordinateKey(objX, objY), newObj);
+    changePlayerStats(constants.actions.breakHungerCost, constants.actions.breakThirstCost);
+  }
+}
+
+function attackAction(action){
+  var objX = player.state.x;
+  var objY = player.state.y;
+  switch(action){
+    case "attack_up":
+      objY--;
+      break;
+    case "attack_down":
+      objY++;
+      break;
+    case "attack_left":
+      objX--;
+      break;
+    case "attack_right":
+      objX++;
+      break;
+  }
+  obj = whichObject(objX, objY);
+  if(isAttackable(obj)){
+    var newObj = { ...obj };
+    newObj.health -= player.state.AttackPower;
+    if(newObj.health <= 0){
+      newObj = defaultAir;
+      switch(obj.type){
+        case "sheep":
+          constants.sheep.breakFunct();
+          break;
         default:
           break;
       }

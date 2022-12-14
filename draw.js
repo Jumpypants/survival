@@ -64,6 +64,16 @@ function drawObjects(){
       display.gridW,
       display.gridH);
   }
+  //sheep
+  for(var i = 0; i < objects.sheep.length; i++){
+    ctx.fillStyle = display.sheepCol;
+    var x = objects.sheep[i].x - player.state.x;
+    var y = objects.sheep[i].y - player.state.y;
+    ctx.fillRect(display.cw / 2 + (x - 0.5) * display.gridW,
+      display.ch / 2 + (y - 0.5) * display.gridH,
+      display.gridW,
+      display.gridH);
+  }
 }
 
 function drawGameOver(){

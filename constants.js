@@ -44,6 +44,7 @@ function code(state){
   } else {
     //a* path
     var obstacles = state.objects.rocks;
+    obstacles.push(...state.objects.sheep);
 
     m.path = shortestPath({x: state.x, y: state.y}, {x: state.x, y: state.y - state.vision - 1}, obstacles, 1000);
 
@@ -134,6 +135,10 @@ const constants = {
     startHealth: 100,
     breakFunct: function(){player.state.resources.stone += 1}
   },
+  sheep: {
+    startHealth: 100,
+    breakFunct: function(){player.state.resources.stone += 1}
+  },
   items: {
     woodenPickaxeWoodCost: 15,
     woodenPickaxeBreakPower: 50
@@ -163,6 +168,7 @@ const display = {
 
   treeCol: "brown",
   rockCol: "gray",
+  sheepCol: "white",
   playerCol: "blue",
 
   //game over
